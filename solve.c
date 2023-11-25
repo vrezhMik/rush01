@@ -1,9 +1,12 @@
+#include "main.h"
 #include <stdio.h>
-#define MAX_SIZE 6
 
-void backtrack(char arr[], char path[], int len, int pos, char used[], char result[][4], int* resultCount) {
+
+void backtrack(char arr[], char path[], int len, int pos, char used[], char **result, int* resultCount) {
     if (pos == len) {
-        for (int i = 0; i < len; i++) {
+         result[*resultCount] = (char *)malloc(len*sizeof(char));
+        for (int i = 0; i < len ; i++) {
+           
             result[*resultCount][i] = path[i];
         }
         (*resultCount)++;
@@ -21,36 +24,53 @@ void backtrack(char arr[], char path[], int len, int pos, char used[], char resu
     }
 }
 
-void generateOutcomes(char arr[], int len) {
-    char result[24][4]; 
+char **generateOutcomes(char arr[], int len) {
+    char **result; 
     int resultCount = 0;
     char used[4] = {0}; 
 
     char path[4];
 
+    result = (char**)malloc(24 * sizeof(char *));
     backtrack(arr, path, len, 0, used, result, &resultCount);
 
-    for (int i = 0; i < resultCount; i++) {
-        for (int j = 0; j < len; j++) {
-            printf("%c ", result[i][j]);
-        }
-        printf("\n");
-    }
+    return result;
 }
 
 
 
-
-int solve(char matrix[MAX_SIZE], int row, int col)
-{
-    int count = 1;
-    int i = 1;
-    int right = matrix[MAX_SIZE-1];
-    int left = matrix[0];
-    while( i < MAX_SIZE - 1)
+int check(char **result, char left, char right, char *top_indexes)
+{   
+    (void)top_indexes;
+    for(int i = 0; i < 24; i++)
     {
-        
+        if(check_row_right(result[i], right) && check_row_left(result[i], left))
+        {
+            printf("%s \n",result[i]);
+        }
     }
+
+   
+    return 1;
+}
+
+int solve(char matrix[MAX_SIZE][MAX_SIZE], char *top_indexes)
+{
+
+    char **result;
+    char inputArray[4] = {'1', '2', '3', '4'};
+
+    result = generateOutcomes(inputArray, 4);
+    for(int i = 0; i < MAX_SIZE; i++)
+    {
+        if(i > 0 && i < MAX_SIZE -1)
+        {
+            printf("%c and %c\n\n",matrix[i][0],matrix[i][MAX_SIZE-1]);
+                check(result, matrix[i][0], matrix[i][MAX_SIZE-1] , top_indexes);
+        }
+    }
+
+   
     return 1;
 }
 
@@ -58,14 +78,23 @@ int main(void)
 {
     char matrix[MAX_SIZE][MAX_SIZE] = {
         {'0','4','3','2','1','0'},
-        {'4','0','0','0','0','1'},
+        {'2','0','0','0','0','3'},
+        {'3','0','0','0','0','1'},
         {'3','0','0','0','0','2'},
-        {'2','0','0','0','0','2'},
-        {'1','0','0','0','0','2'},
+        {'1','0','0','0','0','3'},
         {'0','1','2','2','2','0'}
         };
+    char *top_indexes = (char *)malloc(8);
+    int z = 0;
+    for(int i = 0; i < MAX_SIZE ; i += MAX_SIZE-1)
+    {
+        for(int j = 1; j < MAX_SIZE - 1; j++)
+        {
+            top_indexes[z] = matrix[i][j];
+            z++;
+        }
+    }
 
-char inputArray[4] = {'1', '2', '3', '4'};
-    generateOutcomes(inputArray, 4);
+    solve(matrix , top_indexes);
 
 }
