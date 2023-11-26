@@ -1,34 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_row_left.c                                   :+:      :+:    :+:   */
+/*   backtrack.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrmikaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/26 18:12:45 by vrmikaye          #+#    #+#             */
-/*   Updated: 2023/11/26 18:33:10 by vrmikaye         ###   ########.fr       */
+/*   Created: 2023/11/26 18:04:51 by vrmikaye          #+#    #+#             */
+/*   Updated: 2023/11/26 18:32:38 by vrmikaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int	check_row_left(char arr[], char left)
+void	backtrack(char arr[], char path[], int len, int pos, char used[], char **result, int* resultCount)
 {
-	int	count;
 	int	i;
-	int	max;
 
-	count = 1;
 	i = 0;
-	max = arr[i];
-	while (i < MAX_SIZE - 2)
+	if (pos == len)
 	{
-		if (max < arr[i + 1])
+		result[*resultCount] = (char *)malloc(len * sizeof(char));
+		while (i < len)
 		{
-			max = arr[i + 1];
-			count++;
+			result[*resultCount][i] = path[i];
+			i++;
+		}
+		(*resultCount)++;
+		return ;
+	}
+	while (i < len)
+	{
+		if (!used[i])
+		{
+			path[pos] = arr[i];
+			used[i] = 1;
+			backtrack(arr, path, len, pos + 1, used, result, resultCount);
+			used[i] = 0;
 		}
 		i++;
 	}
-	return (count == left - 48);
 }

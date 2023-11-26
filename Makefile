@@ -1,4 +1,4 @@
-SRCS = solve.c check_row_left.c check_row_right.c
+SRCS = main.c solve.c check_row_left.c check_row_right.c backtrack.c generate_outcomes.c check.c
 
 CC = cc
 
@@ -14,7 +14,7 @@ $(NAME): $(OBJS)
 all: $(NAME)
 
 clean:
-	rm -rf $(OBJS)
+	rm -rf $(OBJS) ./solve
 
 fclean: clean
 	rm -rf $(NAME)

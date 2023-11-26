@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_row_left.c                                   :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrmikaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/26 18:12:45 by vrmikaye          #+#    #+#             */
-/*   Updated: 2023/11/26 18:33:10 by vrmikaye         ###   ########.fr       */
+/*   Created: 2023/11/26 18:14:59 by vrmikaye          #+#    #+#             */
+/*   Updated: 2023/11/26 18:32:59 by vrmikaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int	check_row_left(char arr[], char left)
+char	*check(char **result, char left, char right, char *top_indexes)
 {
-	int	count;
-	int	i;
-	int	max;
+	int		i;
+	int		j;
+	char	*cols;
 
-	count = 1;
+	j = 0;
 	i = 0;
-	max = arr[i];
-	while (i < MAX_SIZE - 2)
+	cols = (char *) malloc(6);
+	while (i < 24)
 	{
-		if (max < arr[i + 1])
-		{
-			max = arr[i + 1];
-			count++;
+		if (check_row_right(result[i], right))
+		{	
+			if (check_row_left(result[i], left))
+			{
+				cols[j] = *result[i];
+				j++;
+			}
 		}
 		i++;
 	}
-	return (count == left - 48);
+	(void) top_indexes;
+	return (cols);
 }

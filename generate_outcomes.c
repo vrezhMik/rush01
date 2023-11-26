@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_row_left.c                                   :+:      :+:    :+:   */
+/*   generate_outcomes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrmikaye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/26 18:12:45 by vrmikaye          #+#    #+#             */
-/*   Updated: 2023/11/26 18:33:10 by vrmikaye         ###   ########.fr       */
+/*   Created: 2023/11/26 18:22:00 by vrmikaye          #+#    #+#             */
+/*   Updated: 2023/11/26 18:32:28 by vrmikaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int	check_row_left(char arr[], char left)
+char	**generate_outcomes(char arr[], int len)
 {
-	int	count;
-	int	i;
-	int	max;
+	char	**result;
+	int		result_count;
+	char	used[4] = {0};
+	char	path[4];
 
-	count = 1;
-	i = 0;
-	max = arr[i];
-	while (i < MAX_SIZE - 2)
-	{
-		if (max < arr[i + 1])
-		{
-			max = arr[i + 1];
-			count++;
-		}
-		i++;
-	}
-	return (count == left - 48);
+	result_count = 0;
+	result = (char **)malloc(24 * sizeof (char *));
+	backtrack(arr, path, len, 0, used, result, &result_count);
+	return (result);
 }
